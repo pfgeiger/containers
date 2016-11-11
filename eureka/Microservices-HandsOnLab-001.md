@@ -4,22 +4,23 @@ In this example, the Netflix OSS implementation of Eureka and Zuul are performed
 
 ## Exercise 1: Deploying Eureka for BlueCompute
 
-The steps in this exercise is acquired from `https://github.com/ibm-cloud-architecture/refarch-cloudnative-netflix-eureka`. While it is faster to use the provided scripts to deploy the component, you will use individual commands to deploy the component to make you aware of the actual process to deploy it.  
+The steps in this exercise are acquired from `https://github.com/ibm-cloud-architecture/refarch-cloudnative-netflix-eureka`. While it is faster to use the provided scripts to deploy the component, you will use individual commands to deploy the component in order to make you aware of the actual process to deploy it.  
 
-1. Explore eureka application. The application settings are stored in `src/main/resources/application.yml` file.
-
-        # cd refarch-cloudnative-netflix-eureka
-        # vi src/main/resources/application.yml
+<ol>
+<li> Explore the eureka application. The application settings are stored in `src/main/resources/application.yml` file. </li>
+<ul>
+<li> cd refarch-cloudnative-netflix-eureka
+<li> vi src/main/resources/application.yml
 ![eureka-appl](exercises/010-eureka-appl-yml.png)
-   - For a spring application, the content of application.yml represent environment variables that can be configured when it is invoked. 
-   - These values can be overrided at execution (see the step when IBM Container group is created). 
-   - The separation of configuration and code is in-line with 12 factors app #3 Config.
+ <p>For a spring application, the contents of the  application.yml file represents environment variables that can be configured when it is invoked. </p>
+<p>These values can be overridden at execution, which is what you will be doing when the Container group is created.  </p>
+   - The separation of configuration and code is in-line with 12 factor apps (Factor #3 Config).
 
-2. Build eureka jar file. There is an option to use Maven or Gradle. In this exercise, you use Gradle as some other components does not have the maven configuration. The build result will be at `build/libs/eureka-0.0.1-SNAPSHOT.jar`, once the processing ended, check whether the file exists.
+2. Build the eureka jar file. There is an option to use Maven or Gradle. In this exercise, you use Gradle as some other components do not have the maven configuration. The build result will be at `build/libs/eureka-0.0.1-SNAPSHOT.jar`, once the processing ends, check that the file exists.
 
         # ./gradlew clean build
 
-2. The generated JAR file is then use to run the Java application. The application would run in a docker container. The process is to build the container locally and then upload that to Bluemix. Docker building is based on the Dockerfile commands. Look on this file first.
+2. The generated JAR file is then used to run the Java application. The application would run in a docker container. The process is to build the container locally and then upload that to Bluemix. Docker building is based on the Dockerfile commands. Look on this file first.
 
         # cd docker
         # vi Dockerfile
