@@ -9,40 +9,42 @@ The steps in this exercise are acquired from `https://github.com/ibm-cloud-archi
 <ol>
 <li> Explore the eureka application. The application settings are stored in `src/main/resources/application.yml` file. </li>
 <ul>
-<li> cd refarch-cloudnative-netflix-eureka
-<li> vi src/main/resources/application.yml
-![eureka-appl](exercises/010-eureka-appl-yml.png)
- <p>For a spring application, the contents of the  application.yml file represents environment variables that can be configured when it is invoked. </p>
-<p>These values can be overridden at execution, which is what you will be doing when the Container group is created.  </p>
-   - The separation of configuration and code is in-line with 12 factor apps (Factor #3 Config).
+<li>*cd refarch-cloudnative-netflix-eureka</li>
+<li> vi src/main/resources/application.yml*</li>
+</ul>
+![eureka-appl](images/ex001eurekayml.png)
+For a spring application, the contents of the  application.yml file represents environment variables that can be configured when it is invoked. 
+These values can be overridden at execution time, which is what you will be doing when the Container group is created. 
+The separation of the configuration and code is in-line with 12 factor apps (Factor #3 Config).
 
-2. Build the eureka jar file. There is an option to use Maven or Gradle. In this exercise, you use Gradle as some other components do not have the maven configuration. The build result will be at `build/libs/eureka-0.0.1-SNAPSHOT.jar`, once the processing ends, check that the file exists.
-
-        # ./gradlew clean build
-
-2. The generated JAR file is then used to run the Java application. The application would run in a docker container. The process is to build the container locally and then upload that to Bluemix. Docker building is based on the Dockerfile commands. Look on this file first.
-
-        # cd docker
-        # vi Dockerfile
+<li>Build the eureka jar file. There is an option to use Maven or Gradle. In this exercise, you use Gradle as some other components do not have the maven configuration. The build result will be at `build/libs/eureka-0.0.1-SNAPSHOT.jar`, once the processing ends, check that the file exists.</li>
+<ul>
+<li>*./gradlew clean build*
+</ul>
+<li>Use the generated JAR file to run the Java application. The application will run in a docker container. The process is to build the container locally and then upload that to Bluemix. Docker building is based on the Dockerfile commands. Take a look at this file first.</li>
+<ul>
+<li> *cd docker* </li>
+<li> *vi Dockerfile* </li>
 ![eureka Dockerfile](exercises/0110-eureka-Dockerfile.png)
 In the Dockerfile, the container is built as follows:
-  - From the standard java container from DockerHub. 
-  - Adding a /tmp filesystem
-  - Add app.jar (you will create this app.jar from the build result later)
-  - Expose port 8761
-  - Define an main process for the container (which is running the Spring application) 
-
-3. Copy the jar file and build docker container locally for eureka
-
-        # cp ../build/libs/eureka-0.0.1-SNAPSHOT.jar app.jar
-        # docker build -t netflix-eureka .
-
-2. Deploy eureka as IBM Container. You will use an environment variable called SUFFIX; this is to make your instances unique for the class. If you follow the README.md guide, this suffix is your container namespace string. Note that the group create defines environment variables that represents the entries in the application.yml.
-
-        # export SUFFIX=<your suffix>
-        # docker tag netflix-eureka registry.ng.bluemix.net/$(cf ic namespace get)/netflix-eureka-${SUFFIX}
-        # docker push registry.ng.bluemix.net/$(cf ic namespace get)/netflix-eureka-${SUFFIX}
-        # cf ic group create --name eureka_cluster --publish 8761 --memory 256 --auto \
+<ul>
+<li>From the standard java container from DockerHub. </li>
+<li>Adding a /tmp filesystem</li>
+<li>Add app.jar (you will create this app.jar from the build result later)</li>
+<li>Expose port 8761</li>
+<li>Define an main process for the container (which is running the Spring application) </li>
+</ul>
+<li>Copy the jar file and build docker container locally for eureka
+<ul>
+<li>*cp ../build/libs/eureka-0.0.1-SNAPSHOT.jar app.jar*</li>
+<li>*docker build -t netflix-eureka .*</li>
+</ul>
+<li>Deploy eureka as IBM Container. You will use an environment variable called SUFFIX; this is to make your instances unique for the class. If you follow the README.md guide, this suffix is your container namespace string. Note that the group create command defines environment variables that represent the entries in the application.yml that you looked at earlier.
+<ul>
+<li>*export SUFFIX=<your suffix>*</li>
+<li>*docker tag netflix-eureka registry.ng.bluemix.net/$(cf ic namespace get)/netflix-eureka-${SUFFIX}*</li>
+<li>*docker push registry.ng.bluemix.net/$(cf ic namespace get)/netflix-eureka-${SUFFIX}*</li>
+<li>*cf ic group create --name eureka_cluster --publish 8761 --memory 256 --auto \
           --min 1 --max 3 --desired 1 \
           --hostname netflix-eureka-${SUFFIX} \
           --domain mybluemix.net \
@@ -52,10 +54,9 @@ In the Dockerfile, the container is built as follows:
           --env eureka.instance.hostname=netflix-eureka-${SUFFIX}.mybluemix.net \
           --env eureka.instance.nonSecurePort=80 \
           --env eureka.port=80 \
-           registry.ng.bluemix.net/$(cf ic namespace get)/netflix-eureka-${SUFFIX}
-
-
-3. Wait a while to let the container initialized, and then verify eureka:
+           registry.ng.bluemix.net/$(cf ic namespace get)/netflix-eureka-${SUFFIX}* </li>
+</ul>
+<li> Wait a while to let the container initialize, and then verify eureka:
 
    - Open a Web browser and connect to http://netflix-eureka-${SUFFIX}.mybluemix.net
    - The Eureka interface is shown below with only itself registered as a component
