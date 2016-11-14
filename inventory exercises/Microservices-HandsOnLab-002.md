@@ -17,7 +17,7 @@ Spring in Context
 
 1. Explore the application. First look at the configuration file, `src/main/resources/application.yml`. As any Spring framework based application, this is where the configuration is stored.
 
-        # _cd refarch-cloudnative-micro-inventory_
+        # <em>cd refarch-cloudnative-micro-inventory</em>
         # _vi src/main/resources/application.yml_
 ![](iimages/inventoryyml.png)
 
