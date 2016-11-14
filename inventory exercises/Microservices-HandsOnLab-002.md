@@ -17,8 +17,8 @@ Spring in Context
 
 1. Explore the application. First look at the configuration file, `src/main/resources/application.yml`. As any Spring framework based application, this is where the configuration is stored.
 
-        # <em>cd refarch-cloudnative-micro-inventory</em>
-        # _vi src/main/resources/application.yml_
+        # cd refarch-cloudnative-micro-inventory
+        # vi src/main/resources/application.yml
 ![](iimages/inventoryyml.png)
 
    The important configuration options are:
@@ -53,30 +53,31 @@ Spring in Context
         # cd docker
         # docker build -t cloudnative/inventoryservice . 
 
-3. You will use an environment variable called SUFFIX; this is to make your instances unique for the class. If you follow the README.md guide, this suffix is your container namespace string. Note that the group create command defines environment variables that represent the entries in the application.yml that you looked at earlier.
-	#export SUFFIX=<your suffix>
+5. You will use an environment variable called SUFFIX; this is to make your instances unique for the class. If you follow the README.md guide, this suffix is your container namespace string. Note that the group create command defines environment variables that represent the entries in the application.yml that you looked at earlier.
+		# export SUFFIX=<your suffix>
 
 Tag and push the local docker image to bluemix private registry.
 
         # docker tag cloudnative/inventoryservice registry.ng.bluemix.net/$(cf ic namespace get)/inventoryservice-${SUFFIX}
         # docker push registry.ng.bluemix.net/$(cf ic namespace get)/inventoryservice-${SUFFIX}
 
-4. Get the private IP address of the database container.
+6. Get the private IP address of the database container.
 
         # cf ic inspect mysql-${SUFFIX} | grep -i ipaddress
+![](images/sqlip.png)
+
     
-5. Start the application in an IBM Bluemix container. Replace `{ipaddr-db-container}` with the private IP address of the database container, `{dbuser}` with database user name and `{password}` with database user password.
+7. Start the application in an IBM Bluemix container. Replace `{ipaddr}` with the private IP address of the database container that you retrieved in the previous step. 
 
         # cf ic group create -p 8080 -m 256 --min 1 --desired 1 \
          --auto --name micro-inventory-group-${SUFFIX} \
-         -e "spring.datasource.url=jdbc:mysql://${ipaddr}:3306/inventorydb" \
-         -e "eureka.client.serviceUrl.defaultZone=http://netflix-eureka-${SUFFIX}.mybluemix.net/eureka/" \
-         -e "spring.datasource.username=dbuser" \
+         -e "spring.datasource.url=jdbc:mysql://${ipaddr}:3306  \  /inventorydb" \
+                  -e "spring.datasource.username=dbuser" \
          -e "spring.datasource.password=Pass4dbUs3R" \
          -n inventoryservice-${SUFFIX} -d mybluemix.net \
          registry.ng.bluemix.net/$(cf ic namespace get)/inventoryservice-${SUFFIX}
 
-4. Validate the inventory service.
+8. Validate the inventory service.
 
         # curl http://inventoryservice-${SUFFIX}.mybluemix.net/micro/inventory/13402
 ![](exercises/028-inv-curl-1.png)
