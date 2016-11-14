@@ -3,25 +3,25 @@
 In this exercise you will be deploying an inventory application. Because you are creating a cloud native application from scratch, the decision was made to create a microservices based application. The inventory application will be using an SQL database to store, retrieve, and update the inventory application. The application itself is provided as part of this exercise, but let's take some time to examine the application.  
 
 
-## Exercise: Deploying Inventory microservice
+## Exercise 1: Deploying Inventory microservice
 The inventory microservice is based on Spring framework and runs in an IBM Container. The instructions here are based on `https://github.com/ibm-cloud-architecture/refarch-cloudnative-micro-inventory/README.md`. 
 
 The Spring Framework is an open source application framework that aims to make J2EE development easier. Unlike single-tier frameworks, such as Struts or Hibernate, Spring aims to help structure whole applications in a consistent, productive manner, pulling together best-of-breed single-tier frameworks to create a coherent architecture.
 The Spring Framework grew out of developer experience using J2EE without frameworks, or with a mix of in-house frameworks. Spring offers services for use throughout an application, not merely in a single architectural tier. Spring aims to take away much of the pain resulting from the complexity and common problems in creating J2EE applications. 
 
-    Spring enables you to enjoy the key benefits of J2EE, while minimizing the complexity encountered by application code.
+Spring enables you to enjoy the key benefits of J2EE, while minimizing the complexity encountered by application code.
 
-    The essence of Spring is in providing enterprise services to Plain Old Java Objects (POJOs). This is particularly valuable in a J2EE environment, but application code delivered as POJOs is naturally reusable in a variety of runtime environments.
+The essence of Spring is in providing enterprise services to Plain Old Java Objects (POJOs). This is particularly valuable in a J2EE environment, but application code delivered as POJOs is naturally reusable in a variety of runtime environments.
 
 Spring in Context 
 
 1. Explore the application. First look at the configuration file, `src/main/resources/application.yml`. As any Spring framework based application, this is where the configuration is stored.
 
-        # cd refarch-cloudnative-micro-inventory
-        # vi src/main/resources/application.yml
-![](exercises/022-inv-appl-yml.png)
+        # _cd refarch-cloudnative-micro-inventory_
+        # _vi src/main/resources/application.yml_
+![](iimages/inventoryyml.png)
+
    The important configuration options are:
-   - eureka.client.serviceUrl.defaultZone
    - server.context-path
    - spring.datasource.url
    - spring.datasource.username
@@ -53,7 +53,10 @@ Spring in Context
         # cd docker
         # docker build -t cloudnative/inventoryservice . 
 
-3. Tag and push the local docker image to bluemix private registry.
+3. You will use an environment variable called SUFFIX; this is to make your instances unique for the class. If you follow the README.md guide, this suffix is your container namespace string. Note that the group create command defines environment variables that represent the entries in the application.yml that you looked at earlier.
+	#export SUFFIX=<your suffix>
+
+Tag and push the local docker image to bluemix private registry.
 
         # docker tag cloudnative/inventoryservice registry.ng.bluemix.net/$(cf ic namespace get)/inventoryservice-${SUFFIX}
         # docker push registry.ng.bluemix.net/$(cf ic namespace get)/inventoryservice-${SUFFIX}
@@ -79,7 +82,7 @@ Spring in Context
 ![](exercises/028-inv-curl-1.png)
 
      
-## Exercise 2: Understandinga Spring framework Java program
+## Exercise 2: Understanding a Spring framework Java program
 
 1. Look at the Java program using the Spring framework. The source is located under src/main/java. The application uses a Java package that is named inventory.mysql and has a structure similar to:
 ![applClasses](exercises/025-inv-applstructure.png)

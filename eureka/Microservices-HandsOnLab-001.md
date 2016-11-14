@@ -41,7 +41,7 @@ In the Dockerfile, the container is built as follows:
 </ul>
 <li>Deploy eureka as IBM Container. You will use an environment variable called SUFFIX; this is to make your instances unique for the class. If you follow the README.md guide, this suffix is your container namespace string. Note that the group create command defines environment variables that represent the entries in the application.yml that you looked at earlier.
 <ul>
-<li><em>export SUFFIX=<your suffix></em></li>
+<li><em>export =<your suffix></em></li>
 <li><em>docker tag netflix-eureka registry.ng.bluemix.net/$(cf ic namespace get)/netflix-eureka-${SUFFIX}</em></li>
 <li><em>docker push registry.ng.bluemix.net/$(cf ic namespace get)/netflix-eureka-${SUFFIX}</em></li>
 <li><em>cf ic group create --name eureka_cluster --publish 8761 --memory 256 --auto \
