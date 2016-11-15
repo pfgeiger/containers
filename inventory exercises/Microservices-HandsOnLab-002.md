@@ -1,19 +1,14 @@
 # Deploying the Inventory microservice 
 
-In this exercise you will be deploying an inventory application. Because you are creating a cloud native application from scratch, the decision was made to create a microservices based application. The inventory application will be using an SQL database to store, retrieve, and update the inventory application. The application itself is provided as part of this exercise, but let's take some time to examine the application.  
+In this exercise you will be deploying an inventory application. Because you are creating a cloud native application from scratch, the decision was made to create a microservices based application. The inventory application will be using an SQL database to store, retrieve, and update the inventory application. The application code is provided as part of this exercise, but let's take some time to examine the application.  
 
 
 ## Exercise 1: Deploying Inventory microservice
-The inventory microservice is based on Spring framework and runs in an IBM Container. The instructions here are based on `https://github.com/ibm-cloud-architecture/refarch-cloudnative-micro-inventory/README.md`. 
+The inventory microservice is based on the Spring framework and runs in an IBM Container. The instructions here are based on `https://github.com/ibm-cloud-architecture/refarch-cloudnative-micro-inventory/README.md`. 
 
-The Spring Framework is an open source application framework that aims to make J2EE development easier. Unlike single-tier frameworks, such as Struts or Hibernate, Spring aims to help structure whole applications in a consistent, productive manner, pulling together best-of-breed single-tier frameworks to create a coherent architecture.
-The Spring Framework grew out of developer experience using J2EE without frameworks, or with a mix of in-house frameworks. Spring offers services for use throughout an application, not merely in a single architectural tier. Spring aims to take away much of the pain resulting from the complexity and common problems in creating J2EE applications. 
+The Spring Framework is an open source application framework that is intended to make J2EE development easier. Unlike single-tier frameworks, Spring aims to help structure whole applications in a consistent, productive manner, pulling together best-of-breed single-tier frameworks to create a coherent architecture.
+The Spring Framework grew out of developer experience using J2EE without frameworks, or with a mix of in-house frameworks. Spring offers services for use throughout an application, not merely in a single architectural tier. Spring aims to take away much of the pain resulting from the complexity and common problems typically encountered in creating J2EE applications. 
 
-Spring enables you to enjoy the key benefits of J2EE, while minimizing the complexity encountered by application code.
-
-The essence of Spring is in providing enterprise services to Plain Old Java Objects (POJOs). This is particularly valuable in a J2EE environment, but application code delivered as POJOs is naturally reusable in a variety of runtime environments.
-
-Spring in Context 
 
 1. Explore the application. First look at the configuration file, `src/main/resources/application.yml`. As any Spring framework based application, this is where the configuration is stored.
 
@@ -22,12 +17,12 @@ Spring in Context
 ![](iimages/inventoryyml.png)
 
    The important configuration options are:
-   - server.context-path
+   - server.context-path        
    - spring.datasource.url
    - spring.datasource.username
    - spring.datasource.password
    
-    These options will be overriden when the container is started.
+    The datasource options will be overriden with your database information when the container is started.
 
 2. Build the application. When the build completes, the build result is in `build/libs/micro-inventory-0.0.1.jar`. This is the file that is used by the microservice. 
 
@@ -54,7 +49,7 @@ Spring in Context
         # docker build -t cloudnative/inventoryservice . 
 
 5. You will use an environment variable called SUFFIX; this is to make your instances unique for the class. If you follow the README.md guide, this suffix is your container namespace string. Note that the group create command defines environment variables that represent the entries in the application.yml that you looked at earlier.
-		# export SUFFIX=<your suffix>
+	# export SUFFIX=<your suffix>
 
 Tag and push the local docker image to bluemix private registry.
 
@@ -72,7 +67,7 @@ Tag and push the local docker image to bluemix private registry.
         # cf ic group create -p 8080 -m 256 --min 1 --desired 1 \
          --auto --name micro-inventory-group-${SUFFIX} \
          -e "spring.datasource.url=jdbc:mysql://${ipaddr}:3306  \  /inventorydb" \
-                  -e "spring.datasource.username=dbuser" \
+         -e "spring.datasource.username=dbuser" \
          -e "spring.datasource.password=Pass4dbUs3R" \
          -n inventoryservice-${SUFFIX} -d mybluemix.net \
          registry.ng.bluemix.net/$(cf ic namespace get)/inventoryservice-${SUFFIX}
