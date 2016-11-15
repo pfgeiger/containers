@@ -1,6 +1,10 @@
 # Deploying the Inventory microservice 
 
-In this exercise you will be deploying an inventory application. Because you are creating a cloud native application from scratch, the decision was made to create a microservices based application. The inventory application will be using an SQL database to store, retrieve, and update the inventory application. The application code is provided as part of this exercise, but let's take some time to examine the application.  
+In this exercise you will be deploying an inventory application. Because you are creating a cloud native application from scratch, the decision was made to create a microservices based application. The inventory application will be using an SQL database to store, retrieve, and update the inventory application. 
+![](images/inventoryarch.png)
+
+
+The application code is provided as part of this exercise, but let's take some time to examine the application.  
 
 
 ## Exercise 1: Deploying Inventory microservice
@@ -50,7 +54,7 @@ The Spring Framework grew out of developer experience using J2EE without framewo
 
 5. You will use an environment variable called SUFFIX; this is to make your instances unique for the class. If you follow the README.md guide, this suffix is your container namespace string. Note that the group create command defines environment variables that represent the entries in the application.yml that you looked at earlier.
 
-	  # export SUFFIX={your suffix}
+        # export SUFFIX=<your suffix> 
 
 Tag and push the local docker image to bluemix private registry.
 
@@ -67,7 +71,8 @@ Tag and push the local docker image to bluemix private registry.
 
         # cf ic group create -p 8080 -m 256 --min 1 --desired 1 \
          --auto --name micro-inventory-group-${SUFFIX} \
-         -e "spring.datasource.url=jdbc:mysql://${ipaddr}:3306  \  /inventorydb" \
+         -e \
+"spring.datasource.url=jdbc:mysql://${ipaddr}:3306/inventorydb" \
          -e "spring.datasource.username=dbuser" \
          -e "spring.datasource.password=Pass4dbUs3R" \
          -n inventoryservice-${SUFFIX} -d mybluemix.net \
@@ -81,17 +86,17 @@ Tag and push the local docker image to bluemix private registry.
      
 ## Exercise 2: Understanding a Spring framework Java program
 
-1. Look at the Java program using the Spring framework. The source is located under src/main/java. The application uses a Java package that is named inventory.mysql and has a structure similar to:
-![applClasses](exercises/025-inv-applstructure.png)
+1. Look at the Java program that uses the Spring framework. The source is located under src/main/java. The application uses a Java package that is named inventory.mysql and has a structure similar to:
+![applClasses](images/025-inv-applstructure.png)
    - Application: the main program that loads spring
    - InventoryController: the logic for URL mappings
    - models/IInventoryRepo: uses CrudController that allows encapsulation of data into an API
    - models/Inventory: class that is used to map individual data item's fields
 2. The main logic that controls the API is provided in InventoryController.java. 
-![apilogic](exercises/026-inv-logic.png)
+![apilogic](images/InventoryController.png)
    The interface is quite simple. Based on the prefix in the application.yml (`/micro`) and the @RequestMapping directive, you can see that 
 `http://inventoryservice-${SUFFIX}.mybluemix.net/micro/check` will give `It works!` as its reply.
-![](exercises/027-inv-check.png) 
+![](images/027-inv-check.png) 
 
 # References:
 http://www.wrox.com/WileyCDA/Section/Why-Use-the-Spring-Framework-.id-130098.html

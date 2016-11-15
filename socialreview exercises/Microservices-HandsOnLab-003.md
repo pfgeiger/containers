@@ -1,6 +1,8 @@
 # Deploying the Social Review microservice 
 
-This unit exercises walk you on installing the social review exercises. The social review microservice runs in a container and uses the Cloudant database that you created in an earlier exercise. 
+This unit exercises walk you on installing the social review exercises. The social review microservice runs in a container and uses the Cloudant database that you created in an earlier exercise.
+![appl yml](images/socialarchitecture.png)
+ 
  
 
 ## Exercise 1: Building the Social Review microservice
