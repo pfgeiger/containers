@@ -50,7 +50,7 @@ The Spring Framework grew out of developer experience using J2EE without framewo
 
 5. You will use an environment variable called SUFFIX; this is to make your instances unique for the class. If you follow the README.md guide, this suffix is your container namespace string. Note that the group create command defines environment variables that represent the entries in the application.yml that you looked at earlier.
 
-	  # export SUFFIX=<your suffix>
+	  # export SUFFIX={your suffix}
 
 Tag and push the local docker image to bluemix private registry.
 
