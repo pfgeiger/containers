@@ -1,6 +1,9 @@
 # Deploying the Inventory microservice 
 
-In this exercise you will be deploying an inventory application. Because you are creating a cloud native application from scratch, the decision was made to create a microservices based application. The inventory application will be using an SQL database to store, retrieve, and update the inventory application. 
+In this exercise you will be deploying an inventory application. Because you are creating a cloud native application from scratch, the decision was made to create a microservices based application. The inventory application will be using an SQL database to store, retrieve, and update the inventory application.
+
+<em>Expected outcome:</em> You have the inventory microservice running in a Bluemix container and comminicating with a Cloudant database. Success is measured by successfully using the application to query the database.
+ 
 ![](images/inventoryarch.png)
 
 

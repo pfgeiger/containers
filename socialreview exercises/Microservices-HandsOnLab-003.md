@@ -1,6 +1,9 @@
 # Deploying the Social Review microservice 
 
 This unit exercises walk you on installing the social review exercises. The social review microservice runs in a container and uses the Cloudant database that you created in an earlier exercise.
+
+<em>Expected outcome:</em> You have the socialreview microservice running in a Bluemix container and comminicating with a mySQL database. Success is measured by successfully using the application to query the database.
+
 ![appl yml](images/socialarchitecture.png)
  
  
