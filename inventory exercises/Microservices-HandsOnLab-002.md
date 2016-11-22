@@ -72,11 +72,12 @@ Tag and push the local docker image to bluemix private registry.
 
         # cf ic group create -p 8080 -m 256 --min 1 --desired 1 \
          --auto --name micro-inventory-group-${SUFFIX} \
- "spring.datasource.url=jdbc:mysql://${cloud destination}/inventorydb" \
+-e "spring.datasource.url=jdbc:mysql://${cloud \ destination}/inventorydb" \
          -e "spring.datasource.username=dbuser" \
          -e "spring.datasource.password=Pass4dbUs3R" \
          -n inventoryservice-${SUFFIX} -d mybluemix.net \
-         registry.ng.bluemix.net/$(cf ic namespace get)/inventoryservice-${SUFFIX}
+         registry.ng.bluemix.net/$(cf ic namespace \
+get)/inventoryservice-${SUFFIX}
 
 7. Validate the inventory service.
 
