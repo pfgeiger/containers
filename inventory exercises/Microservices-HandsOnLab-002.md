@@ -17,7 +17,10 @@ The Spring Framework is an open source application framework that is intended to
 The Spring Framework grew out of developer experience using J2EE without frameworks, or with a mix of in-house frameworks. Spring offers services for use throughout an application, not merely in a single architectural tier. Spring aims to take away much of the pain resulting from the complexity and common problems typically encountered in creating J2EE applications. 
 
 
-1. Explore the application. First look at the configuration file, `src/main/resources/application.yml`. As any Spring framework based application, this is where the configuration is stored.
+1. Explore the application. If you didn't run clonePeers previously, you first need to get the code. From your home directory, run the following command
+	  # git clone https://github.com/pfgeiger/refarch-cloudnative-micro-inventory.git
+
+First look at the configuration file, `src/main/resources/application.yml`. As any Spring framework based application, this is where the configuration is stored.
 
         # cd refarch-cloudnative-micro-inventory
         # vi src/main/resources/application.yml
@@ -63,25 +66,19 @@ Tag and push the local docker image to bluemix private registry.
 
         # docker tag cloudnative/inventoryservice registry.ng.bluemix.net/$(cf ic namespace get)/inventoryservice-${SUFFIX}
         # docker push registry.ng.bluemix.net/$(cf ic namespace get)/inventoryservice-${SUFFIX}
-
-6. Get the private IP address of the database container.
-
-        # cf ic inspect mysql-${SUFFIX} | grep -i ipaddress
-![](images/sqlip.png)
-
     
-7. Start the application in an IBM Bluemix container. Replace `{ipaddr}` with the private IP address of the database container that you retrieved in the previous step. 
+6. Start the application in an IBM Bluemix container. Replace `{ipaddr}` with the private IP address of the database container that you made note of when you installed the mysql container, and replace {cloud destination} with the cloud destination that you saved when you created the mysql destination in the secure gateway.  
 
         # cf ic group create -p 8080 -m 256 --min 1 --desired 1 \
          --auto --name micro-inventory-group-${SUFFIX} \
          -e \
-"spring.datasource.url=jdbc:mysql://${ipaddr}:3306/inventorydb" \
+"spring.datasource.url=jdbc:mysql://${cloud destination}/inventorydb" \
          -e "spring.datasource.username=dbuser" \
          -e "spring.datasource.password=Pass4dbUs3R" \
          -n inventoryservice-${SUFFIX} -d mybluemix.net \
          registry.ng.bluemix.net/$(cf ic namespace get)/inventoryservice-${SUFFIX}
 
-8. Validate the inventory service.
+7. Validate the inventory service.
 
         # curl http://inventoryservice-${SUFFIX}.mybluemix.net/micro/inventory/13402
 ![](exercises/028-inv-curl-1.png)
