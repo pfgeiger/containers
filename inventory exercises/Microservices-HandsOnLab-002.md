@@ -2,7 +2,7 @@
 
 In this exercise you will be deploying an inventory application. Because you are creating a cloud native application from scratch, the decision was made to create a microservices based application. The inventory application will be using an SQL database to store, retrieve, and update the inventory application.
 
-<em>Expected outcome:</em> You have the inventory microservice running in a Bluemix container and comminicating with a Cloudant database. Success is measured by successfully using the application to query the database.
+<em>Expected outcome:</em> You have the inventory microservice running in a Bluemix container and comminicating with an on-premise mySQL database through a secure gateway connection. Success is measured by successfully using the application to query the database.
  
 ![](images/inventoryarch.png)
 
@@ -13,14 +13,13 @@ The application code is provided as part of this exercise, but let's take some t
 ## Exercise 1: Deploying Inventory microservice
 The inventory microservice is based on the Spring framework and runs in an IBM Container. The instructions here are based on `https://github.com/ibm-cloud-architecture/refarch-cloudnative-micro-inventory/README.md`. 
 
-The Spring Framework is an open source application framework that is intended to make J2EE development easier. Unlike single-tier frameworks, Spring aims to help structure whole applications in a consistent, productive manner, pulling together best-of-breed single-tier frameworks to create a coherent architecture.
-The Spring Framework grew out of developer experience using J2EE without frameworks, or with a mix of in-house frameworks. Spring offers services for use throughout an application, not merely in a single architectural tier. Spring aims to take away much of the pain resulting from the complexity and common problems typically encountered in creating J2EE applications. 
+The Spring Framework is an open source application framework that is intended to make J2EE development easier. The Spring Framework grew out of developer experience using J2EE without frameworks, or with a mix of in-house frameworks. Spring offers services for use throughout an application, not merely in a single architectural tier. Spring aims to take away much of the pain resulting from the complexity and common problems typically encountered in creating J2EE applications. 
 
 
 1. Explore the application. If you didn't run clonePeers previously, you first need to get the code. From your home directory, run the following command
 	  # git clone https://github.com/pfgeiger/refarch-cloudnative-micro-inventory.git
 
-First look at the configuration file, `src/main/resources/application.yml`. As any Spring framework based application, this is where the configuration is stored.
+First look at the configuration file, `src/main/resources/application.yml`. As in any Spring framework based application, this is where the configuration is stored.
 
         # cd refarch-cloudnative-micro-inventory
         # vi src/main/resources/application.yml
@@ -34,10 +33,12 @@ First look at the configuration file, `src/main/resources/application.yml`. As a
    
     The datasource options will be overriden with your database information when the container is started.
 
-2. Build the application. When the build completes, the build result is in `build/libs/micro-inventory-0.0.1.jar`. This is the file that is used by the microservice. 
+2. Build the application. 
 
         # cd refarch-cloudnative-micro-inventory
         # ./gradlew build
+
+When the build completes, the build result is in `build/libs/micro-inventory-0.0.1.jar`. This is the file that is used by the microservice. 
 
 3. Look at the Dockerfile.
  
@@ -67,12 +68,11 @@ Tag and push the local docker image to bluemix private registry.
         # docker tag cloudnative/inventoryservice registry.ng.bluemix.net/$(cf ic namespace get)/inventoryservice-${SUFFIX}
         # docker push registry.ng.bluemix.net/$(cf ic namespace get)/inventoryservice-${SUFFIX}
     
-6. Start the application in an IBM Bluemix container. Replace `{ipaddr}` with the private IP address of the database container that you made note of when you installed the mysql container, and replace {cloud destination} with the cloud destination that you saved when you created the mysql destination in the secure gateway.  
+6. Start the application in an IBM Bluemix container. Replace ` {cloud destination}' with the cloud destination that you saved when you created the mysql destination in the secure gateway.  
 
         # cf ic group create -p 8080 -m 256 --min 1 --desired 1 \
          --auto --name micro-inventory-group-${SUFFIX} \
-         -e \
-"spring.datasource.url=jdbc:mysql://${cloud destination}/inventorydb" \
+ "spring.datasource.url=jdbc:mysql://${cloud destination}/inventorydb" \
          -e "spring.datasource.username=dbuser" \
          -e "spring.datasource.password=Pass4dbUs3R" \
          -n inventoryservice-${SUFFIX} -d mybluemix.net \
