@@ -12,7 +12,11 @@ This unit exercises walk you on installing the social review exercises. The soci
 
 This exercise builds the social review application. Like the inventory application, it uses the Spring framework. 
 
-1. Look at the socialreview configuration in refarch-cloudnative-micro-socialreview/src/main/resources/application.yml
+1. If you didn't run the clonePeers.sh previously, you first need to get the code. Enter the following from the base directory:
+
+	  # git clone https://github.com/pfgeiger/refarch-cloudnative-micro-socialreview.git
+
+ Look at the socialreview configuration in refarch-cloudnative-micro-socialreview/src/main/resources/application.yml
 
         # cd refarch-cloudnative-micro-socialreview
         # vi src/main/resources/application.yml
