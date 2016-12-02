@@ -10,7 +10,7 @@ In this exercise you will be deploying an inventory application. Because you are
 The application code is provided as part of this exercise, but let's take some time to examine the application.  
 
 
-## Exercise 1: Deploying Inventory microservice
+## Exercise 1: Deploying the Inventory microservice
 The inventory microservice is based on the Spring framework and runs in an IBM Container. The instructions here are based on `https://github.com/ibm-cloud-architecture/refarch-cloudnative-micro-inventory/README.md`. 
 
 The Spring Framework is an open source application framework that is intended to make J2EE development easier. The Spring Framework grew out of developer experience using J2EE without frameworks, or with a mix of in-house frameworks. Spring offers services for use throughout an application, not merely in a single architectural tier. Spring aims to take away much of the pain resulting from the complexity and common problems typically encountered in creating J2EE applications. 
@@ -49,7 +49,7 @@ When the build completes, the build result is in `build/libs/micro-inventory-0.0
 <li>From the standard java container from DockerHub. </li>
 <li>Adding a /tmp filesystem</li>
 <li>Add app.jar (This is the jar file for the inventory app that you built in the previous step.)</li>
-<li>Instlling the New Relic agent. This is a java performance monitoring agent that has little overhead.  
+<li>Installing the New Relic agent. This is a java performance monitoring agent that has little overhead.  
 <li>Expose port 8080</li>
 <li>Define a main process for the container (which is running the Spring application) </li>
 
@@ -72,7 +72,7 @@ Tag and push the local docker image to bluemix private registry.
 
         # cf ic group create -p 8080 -m 256 --min 1 --desired 1 \
          --auto --name micro-inventory-group-${SUFFIX} \
-	    -e "spring.datasource.url=jdbc:mysql://${cloud \ 	   destination}/inventorydb" \
+	     -e "spring.datasource.url=jdbc:mysql://${cloud \  destination}/inventorydb" \
          -e "spring.datasource.username=dbuser" \
          -e "spring.datasource.password=Pass4dbUs3R" \
          -n inventoryservice-${SUFFIX} -d mybluemix.net \
@@ -96,7 +96,7 @@ get)/inventoryservice-${SUFFIX}
 2. The main logic that controls the API is provided in InventoryController.java. 
 ![apilogic](images/InventoryController.png)
    The interface is quite simple. Based on the prefix in the application.yml (`/micro`) and the @RequestMapping directive, you can see that 
-`http://inventoryservice-${SUFFIX}.mybluemix.net/micro/check` will give `It works!` as its reply.
+`http://inventoryservice-${SUFFIX}.mybluemix.net/micro/check` will return **`It works!`** as its reply.
 ![](images/027-inv-check.png) 
 
 # References:

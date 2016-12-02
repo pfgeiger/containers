@@ -12,20 +12,22 @@ This unit exercises walk you on installing the social review exercises. The soci
 
 This exercise builds the social review application. Like the inventory application, it uses the Spring framework. 
 
+
+
 1. If you didn't run the clonePeers.sh previously, you first need to get the code. Enter the following from the base directory:
 
 	  # git clone https://github.com/pfgeiger/refarch-cloudnative-micro-socialreview.git
 
- Look at the socialreview configuration in refarch-cloudnative-micro-socialreview/src/main/resources/application.yml
+ 	Look at the socialreview configuration in refarch-cloudnative-micro-socialreview/src/main/resources/application.yml
 
         # cd refarch-cloudnative-micro-socialreview
         # vi src/main/resources/application.yml
 ![appl yml](images/appl-yml.png)
-   The important parameters here are (you should be able to know what their values should be by now):
+  	 The important parameters here are (you should be able to know what their values should be by now):
 
-   - cloudant.username
-   - cloudant.password 
-   - cloudant.host
+	- cloudant.username
+	- cloudant.password 
+	- cloudant.host
 
 2. Build the application using Gradle. The result is stored in `build/libs/micro-soialreview-0.1.0.jar`. Note that the test step will try to run the application, which is not available locally.
 
