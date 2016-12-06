@@ -13,62 +13,65 @@ The application code is provided as part of this exercise, but let's take some t
 ## Exercise 1: Deploying the Inventory microservice
 The inventory microservice is based on the Spring framework and runs in an IBM Container. The instructions here are based on `https://github.com/ibm-cloud-architecture/refarch-cloudnative-micro-inventory/README.md`. 
 
-The Spring Framework is an open source application framework that is intended to make J2EE development easier. The Spring Framework grew out of developer experience using J2EE without frameworks, or with a mix of in-house frameworks. Spring offers services for use throughout an application, not merely in a single architectural tier. Spring aims to take away much of the pain resulting from the complexity and common problems typically encountered in creating J2EE applications. 
+The Spring Framework is an open source application framework that is intended to make JEE development easier. The Spring Framework grew out of developer experience using JEE without frameworks, or with a mix of in-house frameworks. Spring offers services for use throughout an application, not merely in a single architectural tier. Spring aims to take away much of the pain resulting from the complexity and common problems typically encountered in creating JEE applications. 
 
 
-1. Explore the application. If you didn't run clonePeers previously, you first need to get the code. From your home directory, run the following command
-	  # git clone https://github.com/pfgeiger/refarch-cloudnative-micro-inventory.git
+1. Explore the application. If you didn't run clonePeers previously, you first need to get the code. From your home directory, run the following command:
 
+        # git clone https://github.com/pfgeiger/refarch-cloudnative-micro-inventory.git
 First look at the configuration file, `src/main/resources/application.yml`. As in any Spring framework based application, this is where the configuration is stored.
 
-        # cd refarch-cloudnative-micro-inventory
-        # vi src/main/resources/application.yml
-![](iimages/inventoryyml.png)
+         # cd refarch-cloudnative-micro-inventory
+         # vi src/main/resources/application.yml
 
-   The important configuration options are:
+![](images/applicationyml.png)
+The important configuration options are:
+
    - server.context-path        
    - spring.datasource.url
    - spring.datasource.username
    - spring.datasource.password
-   
-    The datasource options will be overriden with your database information when the container is started.
+ 
+The datasource options will be overriden with your database information when the container is started.
 
 2. Build the application. 
 
-        # cd refarch-cloudnative-micro-inventory
-        # ./gradlew build
+         # cd refarch-cloudnative-micro-inventory
+         # ./gradlew build
 
-When the build completes, the build result is in `build/libs/micro-inventory-0.0.1.jar`. This is the file that is used by the microservice. 
+    When the build completes, the build result is in `build/libs/micro-inventory-0.0.1.jar`. This is the file that is used by the microservice. 
 
 3. Look at the Dockerfile.
  
         # cat docker/Dockerfile
+
 ![](images/inventorydockerfile.png)
-   The Dockerfile defines how the docker image is built. In this case, the container is built as follows:
-<ul>
-<li>From the standard java container from DockerHub. </li>
-<li>Adding a /tmp filesystem</li>
-<li>Add app.jar (This is the jar file for the inventory app that you built in the previous step.)</li>
-<li>Installing the New Relic agent. This is a java performance monitoring agent that has little overhead.  
-<li>Expose port 8080</li>
-<li>Define a main process for the container (which is running the Spring application) </li>
+The Dockerfile defines how the docker image is built. In this case, the container is built as follows:
+			
+   - From the standard java container from DockerHub
+   - Adding a /tmp filesystem
+   - Add app.jar (This is the jar file for the inventory app that you built in the previous ep.)
+   - Installing the New Relic agent. This is a java performance monitoring agent that has little overhead
+   - Expose port 8080
+   - Define a main process for the container (which is running the Spring application)
+
 
 4. Build the docker image. The first step is copying the jar file that you built to the app.jar file that the Dockerfile is looking for. 
-
-        # cp build/libs/micro-inventory-0.0.1.jar docker/app.jar
-        # cd docker
-        # docker build -t cloudnative/inventoryservice . 
-
+	
+       		 # cp build/libs/micro-inventory-0.0.1.jar docker/app.jar
+      	 	 # cd docker
+      		 # docker build -t cloudnative/inventoryservice . 
+	
 5. You will use an environment variable called SUFFIX; this is to make your instances unique for the class. If you follow the README.md guide, this suffix is your container namespace string. Note that the group create command defines environment variables that represent the entries in the application.yml that you looked at earlier.
 
         # export SUFFIX=<your suffix> 
 
-Tag and push the local docker image to bluemix private registry.
+6. Tag and push the local docker image to bluemix private registry.
 
         # docker tag cloudnative/inventoryservice registry.ng.bluemix.net/$(cf ic namespace get)/inventoryservice-${SUFFIX}
         # docker push registry.ng.bluemix.net/$(cf ic namespace get)/inventoryservice-${SUFFIX}
     
-6. Start the application in an IBM Bluemix container. Replace ` {cloud destination}' with the cloud destination that you saved when you created the mysql destination in the secure gateway.  
+7. Start the application in an IBM Bluemix container. Replace ` {cloud destination}' with the cloud destination that you saved when you created the mysql destination in the secure gateway.  
 
         # cf ic group create -p 8080 -m 256 --min 1 --desired 1 \
          --auto --name micro-inventory-group-${SUFFIX} \
