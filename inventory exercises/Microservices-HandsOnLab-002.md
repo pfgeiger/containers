@@ -70,13 +70,13 @@ First look at the configuration file, `src/main/resources/application.yml`. As i
         # docker push registry.ng.bluemix.net/$(cf ic namespace get)/inventoryservice-${SUFFIX}
 
 7. Retrieve the cloud destination that you configured for the mysql database destination in the Bluemix Secure Gateway service.
-        # Open the Bluemix user interface at console.ng.bluemix.net
-        # Login with your Bluemix credentials
-        # Click the Secure-Gateway service in the Services Section
-        # Click BackendGateway
-        # Settings
-        # Make a note of the cloud host and port. You will need it in the next step
-![](images/clouddestination.png)
+  - Open the Bluemix user interface at console.ng.bluemix.net
+  - Login with your Bluemix credentials
+  - Click the Secure-Gateway service in the Services Section
+  - Click BackendGateway Settings
+  - Make a note of the cloud host and port. You will need it in the next step
+
+ ![](images/clouddestination.png)
 
 7. Start the application in an IBM Bluemix container. Replace  ` {cloud destination}` with the cloud host and port from the previous step.  
 
