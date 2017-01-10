@@ -78,11 +78,11 @@ First look at the configuration file, `src/main/resources/application.yml`. As i
 
  ![](images/clouddestination.png)
 
-7. Start the application in an IBM Bluemix container. Replace  ` {cloud destination}` with the cloud host and port from the previous step.  
+7. Start the application in an IBM Bluemix container. Replace  ` <cloud destination>` with the cloud host and port from the previous step.  
 
         # cf ic group create -p 8080 -m 256 --min 1 --desired 1 \
          --auto --name micro-inventory-group-${SUFFIX} \
-	       -e "spring.datasource.url=jdbc:mysql://${cloud destination}/inventorydb" \
+	       -e "spring.datasource.url=jdbc:mysql://**<cloud destination>**/inventorydb" \
          -e "spring.datasource.username=dbuser" \
          -e "spring.datasource.password=Pass4dbUs3R" \
          -n inventoryservice-${SUFFIX} -d mybluemix.net \
